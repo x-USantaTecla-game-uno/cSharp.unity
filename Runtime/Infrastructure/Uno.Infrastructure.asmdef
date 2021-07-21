@@ -1,0 +1,17 @@
+{
+    "name": "Uno.Infrastructure",
+    "rootNamespace": "",
+    "references": [
+        "Uno.Domain",
+        "Uno.Application"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

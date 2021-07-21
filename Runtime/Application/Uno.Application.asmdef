@@ -1,0 +1,16 @@
+{
+    "name": "Uno.Application",
+    "rootNamespace": "",
+    "references": [
+        "Uno.Domain"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
