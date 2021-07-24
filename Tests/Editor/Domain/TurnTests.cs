@@ -75,5 +75,55 @@ namespace Uno.Tests.Editor.Domain
 
             result.Should().Be(secondPlayer);
         }
+
+        [Test]
+        public void LastTurnOfFirstRound_NextPlayerIsFirstPlayerAgain()
+        {
+            Player firstPlayer = Build.Player();
+            Turn sut = Build.Turn().WithPlayers(firstPlayer, Build.Player(), Build.Player());
+
+            sut.ToNext();
+            sut.ToNext();
+            var result = sut.NextPlayer;
+
+            result.Should().Be(firstPlayer);
+        }
+        
+        [Test]
+        public void FirstTurn_WhenBackwards_NextPlayerIsLastPlayer()
+        {
+            Player lastPlayer = Build.Player();
+            Turn sut = Build.Turn().WithPlayers(Build.Player(), Build.Player(), lastPlayer);
+            
+            sut.SwitchDirection();
+            var result = sut.NextPlayer;
+
+            result.Should().Be(lastPlayer);
+        }
+
+        [Test]
+        public void TurnOfMiddlePlayerOfThree_WhenForwards_NextPlayerIsLastPlayer()
+        {
+            Player lastPlayer = Build.Player();
+            Turn sut = Build.Turn().WithPlayers(Build.Player(), Build.Player(), lastPlayer);
+            
+            sut.ToNext();
+            var result = sut.NextPlayer;
+
+            result.Should().Be(lastPlayer);
+        }
+        
+        [Test]
+        public void TurnOfMiddlePlayerOfThree_WhenBackwards_NextPlayerIsFirstPlayer()
+        {
+            Player firstPlayer = Build.Player();
+            Turn sut = Build.Turn().WithPlayers(firstPlayer, Build.Player(), Build.Player());
+            
+            sut.ToNext();
+            sut.SwitchDirection();
+            var result = sut.NextPlayer;
+
+            result.Should().Be(firstPlayer);
+        }
     }
 }

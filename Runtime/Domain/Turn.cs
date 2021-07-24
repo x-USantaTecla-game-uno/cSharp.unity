@@ -13,7 +13,7 @@ namespace Uno.Runtime.Domain
         public bool IsForwards { get; private set; } = true;
         
         public Player CurrentPlayer => players[currentPlayerIndex];
-        public Player NextPlayer => players[currentPlayerIndex + 1];
+        public Player NextPlayer => players[GetNextIndex()];
         #endregion
         
         #region Constructors
@@ -31,8 +31,26 @@ namespace Uno.Runtime.Domain
 
         public void ToNext()
         {
-            currentPlayerIndex++;
+            currentPlayerIndex = GetNextIndex();
         }
+
+        #region Support methods
+        int GetNextIndex()
+        {
+            var nextIndex = currentPlayerIndex;
+
+            if(IsForwards)
+                nextIndex++;
+            else
+                nextIndex--;
+            
+            if(nextIndex < 0)
+                return players.Length - 1;
+            if(nextIndex >= players.Length)
+                return nextIndex % players.Length;
+            return nextIndex;
+        }
+        #endregion
 
         #region Formatting members
         public override string ToString()
