@@ -37,18 +37,23 @@ namespace Uno.Runtime.Domain
         #region Support methods
         int GetNextIndex()
         {
-            var nextIndex = currentPlayerIndex;
+            return IsForwards
+                ? GetNextIndexForwards()
+                : GetNextIndexBackwards();
+        }
 
-            if(IsForwards)
-                nextIndex++;
-            else
-                nextIndex--;
-            
-            if(nextIndex < 0)
-                return players.Length - 1;
-            if(nextIndex >= players.Length)
-                return nextIndex % players.Length;
-            return nextIndex;
+        int GetNextIndexForwards()
+        {
+            var nextIndex = currentPlayerIndex;
+            return ++nextIndex % players.Length;
+        }
+        
+        int GetNextIndexBackwards()
+        {
+            var nextIndex = currentPlayerIndex;
+            nextIndex--;
+
+            return nextIndex < 0 ? players.Length - 1 : nextIndex;
         }
         #endregion
 
