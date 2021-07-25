@@ -5,14 +5,14 @@ using Uno.Tests.Builders.Domain;
 
 namespace Uno.Tests.Editor.Domain
 {
-    public class UnoDeckTests
+    public class UnoDeckFactoryTests
     {
         [Test]
         public void NewUnoDeck_ContainsExactly108Cards()
         {
-            UnoDeck sut = Build.UnoDeck();
+            UnoDeckFactory sut = Build.UnoDeckFactory();
 
-            var containedCardsAmount = sut.TotalCards;
+            var containedCardsAmount = sut.Create().TotalCards;
 
             containedCardsAmount.Should().Be(108);
         }

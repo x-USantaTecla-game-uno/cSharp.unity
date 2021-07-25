@@ -8,13 +8,16 @@ namespace Uno.Runtime.Domain
 {
     public class Deck
     {
-        protected Queue<Card> drawPile;
-        protected readonly Stack<Card> discardPile;
+        Queue<Card> drawPile;
+        readonly Stack<Card> discardPile;
         
         public Card LastDiscard => discardPile.Peek();
      
         //TODO: invert this dependency.
         readonly IRandomService random = new SystemRandomService();
+        
+        //TODO: to inherited testing class.
+        public int TotalCards => drawPile.Count + discardPile.Count;
         
         public Deck(IEnumerable<Card> cards)
         {
@@ -35,7 +38,6 @@ namespace Uno.Runtime.Domain
             discardPile.Push(playedCard);
         }
 
-        static int test = 1;
         #region Support methods
         IEnumerable<Card> ShuffleCards(IEnumerable<Card> cards)
         {

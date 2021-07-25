@@ -1,12 +1,14 @@
 using System.Collections.Generic;
+using Uno.Runtime.Services;
 
 namespace Uno.Runtime.Domain
 {
-    public class UnoDeck : Deck
+    public class UnoDeckFactory : IFactory<Deck>
     {
-        public int TotalCards => drawPile.Count + discardPile.Count;
-        
-        public UnoDeck() : base(CreateUnoCards()) { }
+        public Deck Create()
+        {
+            return new Deck(CreateUnoCards());
+        }
 
         #region Support methods
         static IEnumerable<Card> CreateUnoCards()

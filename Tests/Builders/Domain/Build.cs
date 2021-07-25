@@ -8,6 +8,6 @@ namespace Uno.Tests.Builders.Domain
         public static NumeredCardBuilder NumeredCard() => NumeredCardBuilder.New();
         
         public static DeckBuilder Deck() => DeckBuilder.New();
-        public static UnoDeckBuilder UnoDeck() => UnoDeckBuilder.New();
+        public static UnoDeckFactoryBuilder UnoDeckFactory() => UnoDeckFactoryBuilder.New();
     }
 }
