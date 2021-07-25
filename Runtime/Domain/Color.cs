@@ -1,3 +1,7 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
 namespace Uno.Runtime.Domain
 {
     public enum Color
@@ -16,6 +20,17 @@ namespace Uno.Runtime.Domain
             return color == Color.Any ||
                    other == Color.Any ||
                    color == other;
+        }
+
+        public static IEnumerable<Color> PlayableColors
+        {
+            get
+            {
+                var allColors = Enum.GetValues(typeof(Color)).OfType<Color>();
+                var allColorsButAny = allColors.Where(color => color != Color.Any);
+
+                return allColorsButAny;
+            }
         }
     }
 }

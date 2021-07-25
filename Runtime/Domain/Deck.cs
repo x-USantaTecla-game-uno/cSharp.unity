@@ -8,8 +8,8 @@ namespace Uno.Runtime.Domain
 {
     public class Deck
     {
-        Queue<Card> drawPile;
-        readonly Stack<Card> discardPile;
+        protected Queue<Card> drawPile;
+        protected readonly Stack<Card> discardPile;
         
         public Card LastDiscard => discardPile.Peek();
      
