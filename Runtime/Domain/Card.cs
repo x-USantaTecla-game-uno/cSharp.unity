@@ -16,5 +16,12 @@ namespace Uno.Runtime.Domain
         }
 
         protected virtual bool MatchesHook(Card other) => true;
+
+        #region Formatting members
+        public override string ToString()
+        {
+            return $"[{nameof(color)}: {color}]";
+        }
+        #endregion
     }
 }

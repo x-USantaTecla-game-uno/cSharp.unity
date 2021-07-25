@@ -14,5 +14,13 @@ namespace Uno.Runtime.Domain
             return o is NumeredCard other &&
                    number == other.number;
         }
+        
+        #region Formatting members
+        public override string ToString()
+        {
+            return $"[{base.ToString()}, {nameof(number)}: {number}]";
+        }
+        
+        #endregion
     }
 }
