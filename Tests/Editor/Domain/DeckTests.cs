@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using FluentAssertions;
 using NUnit.Framework;
 using Uno.Runtime.Domain;
@@ -66,6 +67,18 @@ namespace Uno.Tests.Editor.Domain
             Action act = () => sut.Draw();
 
             act.Should().Throw<InvalidOperationException>();
+        }
+
+        [Test, Retry(10)]
+        public void Draw_FromPlentyCards_ReturnsNotTheFirstInsertedCard()
+        {
+            var docCards = Build.NumeredCard().BunchOf(50);
+            Deck sut = Build.Deck().WithCards(docCards);
+            
+            var drawnCard = sut.Draw();
+
+            var firstInsertedCard = docCards.First();
+            drawnCard.Should().NotBe(firstInsertedCard);
         }
     }
 }

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Uno.Runtime.Domain;
 
 namespace Uno.Tests.Builders.Domain
@@ -25,6 +26,16 @@ namespace Uno.Tests.Builders.Domain
         NumeredCardBuilder() { }
 
         internal static NumeredCardBuilder New() => new NumeredCardBuilder();
+
+        public ICollection<Card> BunchOf(int cardsAmount)
+        {
+            var bunchOfCards = new List<Card>();
+
+            for(var i = 0; i < cardsAmount; i++)
+                bunchOfCards.Add(Build());
+            
+            return bunchOfCards;
+        }
         #endregion
 
         #region Builder implementation

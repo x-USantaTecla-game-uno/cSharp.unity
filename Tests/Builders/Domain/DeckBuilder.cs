@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Linq;
 using Uno.Runtime.Domain;
 
 namespace Uno.Tests.Builders.Domain
@@ -10,6 +12,12 @@ namespace Uno.Tests.Builders.Domain
         public DeckBuilder WithCards(params Card[] cards)
         {
             this.cards = cards;
+            return this;
+        }
+
+        public DeckBuilder WithCards(IEnumerable<Card> cards)
+        {
+            this.cards = cards.ToArray();
             return this;
         }
         #endregion
