@@ -4,10 +4,13 @@ namespace Uno.Runtime.Domain
     {
         readonly Color color;
 
+        #region Constructors
+        internal Card() : this(Color.Any) { }
         protected Card(Color color)
         {
             this.color = color;
         }
+        #endregion
 
         public bool Matches(Card other)
         {

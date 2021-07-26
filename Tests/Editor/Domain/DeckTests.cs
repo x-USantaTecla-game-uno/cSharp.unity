@@ -12,7 +12,7 @@ namespace Uno.Tests.Editor.Domain
         [Test]
         public void Draw_FromDeckWithOneCard_ReturnsThatCard()
         {
-            Card docCard = Build.NumeredCard();
+            Card docCard = Fake.Card();
             Deck sut = Build.Deck().WithCards(docCard);
 
             var drawnCard = sut.Draw();
@@ -25,7 +25,7 @@ namespace Uno.Tests.Editor.Domain
         {
             Deck sut = Build.Deck();
 
-            Card playedCard = Build.NumeredCard();
+            Card playedCard = Fake.Card();
             sut.Play(playedCard);
 
             sut.LastDiscard.Should().Be(playedCard);
@@ -36,10 +36,10 @@ namespace Uno.Tests.Editor.Domain
         {
             //Arrange
             Deck sut = Build.Deck();
-            Card playedCard = Build.NumeredCard();
+            Card playedCard = Fake.Card();
             sut.Play(playedCard);
             
-            sut.Play(Build.NumeredCard());
+            sut.Play(Fake.Card());
             
             //Act     
             var drawnCard = sut.Draw();
@@ -62,7 +62,7 @@ namespace Uno.Tests.Editor.Domain
         public void Draw_FromDeckWithJustOneCard_IfThatCardWasDiscarded_ThrowsException()
         {
             Deck sut = Build.Deck();
-            sut.Play(Build.NumeredCard());
+            sut.Play(Fake.Card());
             
             Action act = () => sut.Draw();
 

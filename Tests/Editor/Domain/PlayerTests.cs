@@ -21,7 +21,7 @@ namespace Uno.Tests.Editor.Domain
         [Test]
         public void NewPlayer_WithStartingHand_HasCards()
         {
-            Player sut = Build.Player().WithStartingHand(Build.NumeredCard());
+            Player sut = Build.Player().WithHand(Fake.Card());
 
             var playerRemainingCards = sut.RemainingCards;
 
@@ -32,7 +32,7 @@ namespace Uno.Tests.Editor.Domain
         public void NewPlayer_AfteAddCard_HasNotZeroCards()
         {
             Player sut = Build.Player();
-            sut.AddCard(Build.NumeredCard());
+            sut.AddCard(Fake.Card());
 
             var playerRemainingCards = sut.RemainingCards;
 
@@ -42,8 +42,8 @@ namespace Uno.Tests.Editor.Domain
         [Test, Category("TODO"), Ignore("TODO")]
         public void PlayerWithCards_AfterRemoveCard_HasLessCards()
         {
-            var docCard = Build.NumeredCard();
-            Player sut = Build.Player().WithStartingHand(docCard);
+            var docCard = Fake.Card();
+            Player sut = Build.Player().WithHand(docCard);
 
             var cardsBefore = sut.RemainingCards;
             sut.RemoveCard(docCard);
@@ -55,7 +55,7 @@ namespace Uno.Tests.Editor.Domain
         [Test]
         public void RemovingCard_FromPlayerWhoDoesNotOwnThatCard_ThrowsException()
         {
-            var docCard = Build.NumeredCard();
+            var docCard = Fake.Card();
             Player sut = Build.Player();
 
             Action act = () => sut.RemoveCard(docCard);

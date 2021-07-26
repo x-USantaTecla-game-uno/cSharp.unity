@@ -7,7 +7,7 @@ namespace Uno.Tests.Builders.Domain
         Card[] cards;
         
         #region Fluent API
-        public PlayerBuilder WithStartingHand(params Card[] cards)
+        public PlayerBuilder WithHand(params Card[] cards)
         {
             this.cards = cards;
             return this;
