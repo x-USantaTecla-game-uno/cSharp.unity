@@ -6,14 +6,18 @@ namespace Uno.Runtime.Domain
 {
     public class Player
     {
-        readonly List<Card> hand;
+        readonly ICollection<Card> hand;
 
         public int RemainingCards => hand.Count;
 
-        public Player()
+        #region Constructors
+        public Player() : this(new List<Card>()) { }
+        
+        public Player(ICollection<Card> startingHand)
         {
-            hand = new List<Card>();
+            hand = startingHand;
         }
+        #endregion
 
         public void AddCard(Card card)
         {
@@ -24,7 +28,7 @@ namespace Uno.Runtime.Domain
         public void RemoveCard(Card card)
         {
             if(!hand.Contains(card))
-                throw new ArgumentOutOfRangeException();
+                throw new InvalidOperationException();
             
             hand.Remove(card);
         }

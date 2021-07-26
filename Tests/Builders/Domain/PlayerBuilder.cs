@@ -4,8 +4,14 @@ namespace Uno.Tests.Builders.Domain
 {
     public class PlayerBuilder : Builder<Player>
     {
+        Card[] cards;
+        
         #region Fluent API
-
+        public PlayerBuilder WithStartingHand(params Card[] cards)
+        {
+            this.cards = cards;
+            return this;
+        }
         #endregion
 
         #region ObjectMother/FactoryMethods
@@ -15,7 +21,7 @@ namespace Uno.Tests.Builders.Domain
         #endregion
 
         #region Builder implementation
-        public override Player Build() => new Player();
+        public override Player Build() => cards is null ? new Player() : new Player(cards);
         #endregion
     }
 }

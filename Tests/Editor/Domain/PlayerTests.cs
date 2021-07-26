@@ -19,6 +19,16 @@ namespace Uno.Tests.Editor.Domain
         }
 
         [Test]
+        public void NewPlayer_WithStartingHand_HasCards()
+        {
+            Player sut = Build.Player().WithStartingHand(Build.NumeredCard());
+
+            var playerRemainingCards = sut.RemainingCards;
+
+            playerRemainingCards.Should().BePositive();
+        }
+
+        [Test]
         public void NewPlayer_AfteAddCard_HasNotZeroCards()
         {
             Player sut = Build.Player();
@@ -33,8 +43,7 @@ namespace Uno.Tests.Editor.Domain
         public void PlayerWithCards_AfterRemoveCard_HasLessCards()
         {
             var docCard = Build.NumeredCard();
-            Player sut = Build.Player();
-            sut.AddCard(docCard);
+            Player sut = Build.Player().WithStartingHand(docCard);
 
             var cardsBefore = sut.RemainingCards;
             sut.RemoveCard(docCard);
@@ -51,7 +60,7 @@ namespace Uno.Tests.Editor.Domain
 
             Action act = () => sut.RemoveCard(docCard);
 
-            act.Should().Throw<ArgumentOutOfRangeException>();
+            act.Should().Throw<InvalidOperationException>();
         }
     }
 }
