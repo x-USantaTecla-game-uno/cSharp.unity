@@ -2,7 +2,7 @@
     "name": "Uno.Domain",
     "rootNamespace": "",
     "references": [
-        "GUID:191c6bc7e49d10148960f9e3a6e163f1"
+        "Uno.Runtime.Services"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
