@@ -2,7 +2,7 @@
     "name": "Uno.Domain",
     "rootNamespace": "",
     "references": [
-        "Uno.Runtime.Services"
+        "Uno.Services"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

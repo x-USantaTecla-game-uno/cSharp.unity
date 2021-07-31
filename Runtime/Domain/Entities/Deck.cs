@@ -12,13 +12,11 @@ namespace Uno.Runtime.Domain
         readonly Stack<Card> discardPile;
         
         public Card LastDiscard => discardPile.Peek();
+        internal int TotalCards => drawPile.Count + discardPile.Count;
      
         //TODO: invert this dependency.
         readonly IRandomService random = new SystemRandomService();
-        
-        //TODO: to inherited testing class.
-        public int TotalCards => drawPile.Count + discardPile.Count;
-        
+
         public Deck(IEnumerable<Card> cards)
         {
             drawPile = new Queue<Card>(ShuffleCards(cards));

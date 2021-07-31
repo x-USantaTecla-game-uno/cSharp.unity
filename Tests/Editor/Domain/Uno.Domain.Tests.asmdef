@@ -1,5 +1,5 @@
 {
-    "name": "Uno.Editor.Tests.Domain",
+    "name": "Uno.Domain.Tests",
     "rootNamespace": "",
     "references": [
         "UnityEngine.TestRunner",

@@ -12,9 +12,9 @@ namespace Uno.Tests.Editor.Domain
         {
             UnoDeckFactory sut = Build.UnoDeckFactory();
 
-            var containedCardsAmount = sut.Create().TotalCards;
+            var createdDeck = sut.Create();
 
-            containedCardsAmount.Should().Be(108);
+            createdDeck.TotalCards.Should().Be(108);
         }
     }
 }

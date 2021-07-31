@@ -1,5 +1,5 @@
 {
-    "name": "Uno.Runtime.Services",
+    "name": "Uno.Services",
     "rootNamespace": "",
     "references": [],
     "includePlatforms": [],
