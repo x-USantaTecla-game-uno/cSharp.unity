@@ -9,8 +9,8 @@ o paliar la ausencia de otros de Java.
 
 NUnit es la librería de testing más extendida y madura de .NET. Se basa en xUnit como casi todas, por
 lo que las diferencias entre ella y JUnit son sutiles.  
-A fin de comentar las alternativas, la herramienta [xUnit.net](https://github.com/xunit/xunit) fue escrita  
-por el creador de NUnit v2, forma parte de la [.NET Foundation](https://dotnetfoundation.org/)  
+A fin de comentar las alternativas, la herramienta [xUnit.net](https://github.com/xunit/xunit) fue escrita
+por el creador de NUnit v2, forma parte de la [.NET Foundation](https://dotnetfoundation.org/)
 y en la última década se ha convertido en una opción cada vez más escogida.
 
 **Justificación**: Unity tiene un motor propio de testing basado en NUnit, por lo que no había decisión que tomar.   
@@ -140,7 +140,6 @@ Por otro lado, explicitar las tres palabras clave no es necesario salvo que clar
 Ejemplos:
 ```
 //Casos con Given_When_Then implícito
-
 void Turn_SwitchDirection_DirectionChanges()
 void Turn_SwitchDirectionTwice_DirectionIsTheSame()
 void Draw_FromPlentyCards_DoesNotReturnAlwaysTheFirstInsertedCard()
@@ -163,7 +162,9 @@ void NumeredCard_DoesNotMatchOther_IfColorIsNotTheSame_RegardlessTheyHaveSameNum
 Algunas recurrencias:
 - Aquel objeto que contiene lo que va a ejercitar el test se nombra `sut` (práctica habitual en .NET).
 - Por consecuencia, los docs del sut incluyen en su nombre `doc`.
-- Los dobles de test incluyen como mínimo `mock` en su nombre. Mejor si especifican qué tipo de doble son.
+- Los dobles de test incluyen como mínimo `mock` en su nombre.
+  - Mejor si especifican qué tipo de doble son: `stub`, `spy`, `dummy`...
+  - No llamar nunca `stub` a un *mock* ([referencia](https://martinfowler.com/articles/mocksArentStubs.html)).
 - Si el test es muy fácil de leer, el resultado que se recoge en el *act* y se aserta después puede llamarse `result` o contener esa palabra en su nombre.
 - Si se está probando una precondición que lanza una excepción, se hace mediante una función anónima recogida en una variable de nombre `act`.
 - Si es de utilidad para la legibilidad del test, se recoge la expectativa en una variable que contiene `expected` en su nombre.
@@ -175,3 +176,4 @@ Algunas recurrencias:
   - Visibilidad de paquete.
 - Fachadas de los builders.
 - Arquitectura general de los paquetes de test.
+- ToC
