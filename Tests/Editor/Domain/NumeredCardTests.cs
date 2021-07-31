@@ -28,5 +28,16 @@ namespace Uno.Tests.Editor.Domain
 
             result.Should().BeFalse();
         }
+
+        [Test]
+        public void NumeredCard_DoesNotMatchOther_IfColorIsNotTheSame_RegardlessTheyHaveSameColor()
+        {
+            NumeredCard sut1 = Build.NumeredCard().WithNumber(1).WithColor(Color.Blue);
+            NumeredCard sut2 = Build.NumeredCard().WithNumber(1).WithColor(Color.Red);
+
+            var result = sut1.Matches(sut2);
+
+            result.Should().BeFalse();
+        }
     }
 }
