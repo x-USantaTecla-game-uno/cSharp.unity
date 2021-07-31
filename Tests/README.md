@@ -13,7 +13,21 @@ A fin de comentar las alternativas, la herramienta [xUnit.net](https://github.co
 por el creador de NUnit v2, forma parte de la [.NET Foundation](https://dotnetfoundation.org/)
 y en la última década se ha convertido en una opción cada vez más escogida.
 
-**Justificación**: Unity tiene un motor propio de testing basado en NUnit, por lo que no había decisión que tomar.   
+**Justificación**: Unity tiene un motor propio de testing basado en NUnit, por lo que no había decisión que tomar.  
+
+Algunas notas para sintetizar someramente la sintaxis de NUnit:  
+- `[Test]`: atributo que decora a cada método que representa un test unitario, que debe ser `public void`.
+  - Nota: podría ser `public Task` en test asíncronos pero el NUnit de Unity no lo soporta aún y en esta práctica no nos hace falta.
+
+- `[TestCase([params])]`: atributo que genera un caso para un test parametrizado pasándole los parámetros en *params*.
+
+- `[Theory]`: atributo alternativo a `[Test]` para marcar que para todo valor posible de los parámetros de ese test, el test debe satisfacerse (se explican más adelante).
+
+- `[TestFixture]`: atributo que decora a cada clase que contiene test.
+  - Hace varias versiones de NUnit que no hace falta ponerlo (una clase con un `[Test]` ya lo es implícitamente).
+  - Esta nomenclatura resulta confusa, ya que la *fixture* es el escenario que se crea para los test de esa clase. Es decir, el *arrange*.
+    Pero es precisamente ese escenario común el que marca la cohesión de los mismos y por tanto la que da esencia a la clase de test.
+  
 
 ## Estructura de los test: patrón "AAA"
 Igual que hemos visto en clase, el formato de un test diferencia bien a simple vista tres partes:
@@ -153,8 +167,6 @@ void AnyColor_MatchesToAllOtherColors()
 
 //Casos donde otra nomenclatura ayuda más
 void NumeredCard_DoesNotMatchOther_IfColorIsNotTheSame_RegardlessTheyHaveSameNumber()
-
-    
 ```
 
 ### Nombre del contenido de los test
@@ -169,9 +181,20 @@ Algunas recurrencias:
 - Si se está probando una precondición que lanza una excepción, se hace mediante una función anónima recogida en una variable de nombre `act`.
 - Si es de utilidad para la legibilidad del test, se recoge la expectativa en una variable que contiene `expected` en su nombre.
 
+## Uso de test parametrizados y teorías
+
+Se usarán test parametrizados para hacer casos de test (`[TestCase]` en C#).  
+Estos casos de test enviarán al test valores límite representativos de las diferentes clases de equivalencia.  
+Si ayuda a la comprensión, un comentario puede acompañar a cada caso de test para referenciar esa clase de equivalencia.
+
+Cuando hacer distintos casos de test de un mismo test desequilibre la legibilidad del mismo o disminuya la riqueza de su título,
+se dividirá en varios test en lugar de usar uno solo con test parametrizados. 
+
+Si los parámetros del test deberían cumplir el test para todos sus valores posibles, entonces estamos ante una teoría y el test
+se marcará como tal usando el atributo `[Theory]` en lugar de `[Test]`.
+
 ## TBC
 
-- Uso de teorías.
 - Builders.
   - Visibilidad de paquete.
 - Fachadas de los builders.
