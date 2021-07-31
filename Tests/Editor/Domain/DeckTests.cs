@@ -70,7 +70,7 @@ namespace Uno.Tests.Editor.Domain
         }
 
         [Test, Retry(10)]
-        public void Draw_FromPlentyCards_ReturnsNotTheFirstInsertedCard()
+        public void Draw_FromPlentyCards_DoesNotReturnAlwaysTheFirstInsertedCard()
         {
             var docCards = Build.NumeredCard().BunchOf(50);
             Deck sut = Build.Deck().WithCards(docCards);

@@ -30,7 +30,7 @@ namespace Uno.Tests.Editor.Domain
         }
 
         [Test]
-        public void NumeredCard_DoesNotMatchOther_IfColorIsNotTheSame_RegardlessTheyHaveSameColor()
+        public void NumeredCard_DoesNotMatchOther_IfColorIsNotTheSame_RegardlessTheyHaveSameNumber()
         {
             NumeredCard sut1 = Build.NumeredCard().WithNumber(1).WithColor(Color.Blue);
             NumeredCard sut2 = Build.NumeredCard().WithNumber(1).WithColor(Color.Red);
