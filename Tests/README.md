@@ -181,6 +181,21 @@ Algunas recurrencias:
 - Si se está probando una precondición que lanza una excepción, se hace mediante una función anónima recogida en una variable de nombre `act`.
 - Si es de utilidad para la legibilidad del test, se recoge la expectativa en una variable que contiene `expected` en su nombre.
 
+## Arquitectura de test y producción
+
+TBC.
+
+Test:
+```plantuml
+@startuml
+Test -> Other
+@enduml
+```
+ 
+### Creación de sut y docs: *Builders* y fachada estática
+
+TBC.
+
 ## Uso de test parametrizados y teorías
 
 Se usarán test parametrizados para hacer casos de test (`[TestCase]` en C#).  
@@ -191,7 +206,13 @@ Cuando hacer distintos casos de test de un mismo test desequilibre la legibilida
 se dividirá en varios test en lugar de usar uno solo con test parametrizados. 
 
 Si los parámetros del test deberían cumplir el test para todos sus valores posibles, entonces estamos ante una teoría y el test
-se marcará como tal usando el atributo `[Theory]` en lugar de `[Test]`.
+se marcará como tal usando el atributo `[Theory]` en lugar de `[Test]`.  
+No hay que olvidar que si la teoría recibe parámetros de tipos discretos y finitos, el propio motor se encarga de hacerle los casos.
+Por ejemplo, una teoría que recibe un *bool* o una *enum*, es recogida por NUnit para generar todos los casos distintos posibles.  
+Para tipos no discretos ni finitos hace falta hacer un `[DataSource]`.
+
+La combinación entre teorías y atributos *DataSource*, para terminar, son especialmente útiles para tener en una misma clase  
+todas las pruebas de diferentes subtipos que tienen que satisfacer los test de su supertipo, en lugar de usar herencia en clase de test. 
 
 ## TBC
 
