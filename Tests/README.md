@@ -30,7 +30,7 @@ o paliar la ausencia de otros de Java.
   * [Creación de dobles: *MockBuilder* y fachada estática de *mocks*](#creación-de-dobles-mockbuilder-y-fachada-estática-de-mocks)
     + [*MockBuilders* que heredan de *Builder*](#mockbuilders-que-heredan-de-builder)
     + [Fachada estática de *mocks*](#fachada-estática-de-mocks)
-- [Arquitectura de test+producción](#arquitectura-de-test-y-producción)
+- [Arquitectura de test y producción](#arquitectura-de-test-y-producción)
   * [Paquetes «amigos»](#paquetes-amigos)
   * [Diagrama de arquitectura](#diagrama-de-arquitectura)
 - [Uso de test parametrizados y teorías](#uso-de-test-parametrizados-y-teorías)
@@ -38,7 +38,51 @@ o paliar la ausencia de otros de Java.
 
 ##  Resumen (TL;DR)
 
-TBC.
+Este texto explica todas las peculiaridades de Unity a la hora de arquitecturizar y propone una metodología
+para lidiar con ello y adaptar, en la medida de lo posible, el contenido visto en el curso de *testing*.
+
+Dicha metodología, comparándola con la del curso, se podría resumir en:
+
+1- Como dijo Luis:
+  - Los builders encapsulan la creación de objetos
+  para no depender de los constructores.
+    > Hasta aquí igual que en java.
+
+
+2- La API fluida se hace igual que dijo Luis en Java.
+  - En C#, sin embargo, la comunidad suele prefijar con "With" esos métodos.
+    
+    > Ejemplo: Donde Luis ponía `.value(x)`,
+             en C# sería más habitual ver `.WithValue(x)`.
+
+3- Luis hacía una fachada estática (que, si recordamos, denominaba factoría).
+   - La fachada de Luis devolvía objetos ya creados para ocultar el `.build()`. 
+   - En este caso esa fachada existe pero devuelve *Builders*.
+      - Esta fachada es una clase estática llamada `Build`.
+      - Por cada *Builder*, la clase estática `Build` tiene un método estático de mismo nombre.
+          - Este método devuelve un Builder recién construido.
+          - Por eso el constructor de los Builder es privado (para "evitar" usarlos fuera de esto).
+    
+        >Ejemplo: `Build.Card().WithColor(Color.Red)`.
+    
+4- Para ocultar el `.Build()` de los builders, se usa conversión implícita de tipos.
+   - Esta es la principal diferencia respecto a lo que vimos..
+   - En java no hay sobreescritura de conversión implícita de tipos. En .NET sí.
+    
+>Ejemplo: `Card sut = Build.Card().WithColor(Color.Red)` funciona porque `CardBuilder` se convierte implícitamente a `Card` llamando a su `.Build()` por dentro.
+    
+5- Inciso sobre los ObjectMother.
+   - Son parte de los builders, que devuelve objetos especiales ya creados.
+   - Atajan construcciones **habituales para el modelo de dominio**.
+   - Lecturas recomendadas: [blog de Martin Fowler](https://martinfowler.com/bliki/ObjectMother.html)
+     y paper de ThoughtWorks donde [se propusieron](http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.18.4710&rep=rep1&type=pdf).  
+    
+   - Como en el caso de Luis, no se diferenciarían de su fachada de alto nivel.
+   - Pierden (a veces) la flexibilidad de los Builders pero aceleran y limpian muchos tests.
+    
+   > Ejemplos: alumno de ERASMUS, cliente extranjero.    
+
+
 
 ## Motor de test: NUnit
 
@@ -383,7 +427,8 @@ no usar `var` solventará el problema la mayoría de veces, salvo cuando ocurra 
 En ocasiones hay gente que ha preferido, solo por este detalle, usar una palabra clave distinta para la fachada estática, sacrificando a nuestro parecer
 cierta homogeneidad léxica.
 
-Estos son los mayores impedimentos encontrados hasta la fecha en la metodología propuesta y, en caso de dar alguien con una solución mejor,
+Estos son los mayores impedimentos encontrados hasta la fecha en la metodología propuesta (junto con uno de arquitectura que se verá después)
+y, en caso de dar alguien con una solución mejor,
 agradeceremos que se aporte como *issue* a este repositorio para poder mejorar. :)
 
 
@@ -434,6 +479,16 @@ de manera desastrosa, duplicaban la clase para llamar a otra *An* y añadirle es
 
 ## Arquitectura de test y producción
 
+Resulta necesario clarificar que Unity maneja proyectos monolíticos, en tanto que su despliegue es uno y único.
+Sin embargo, de un tiempo a esta parte, la migración al *package manager* y la adopción de ensamblajes de C# mediante
+las *assembly definitions* (y *assembly referencies* posteriormente para proyectos *legacy*) sí que ha abierto mucho las 
+opciones que los arquitectos tienen en Unity para distribuir las clases y gestionar las dependencias.
+
+El *package manager*, un reflejo de NPM y de NuGet a fin de cuentas, permite el versionado por separado de los paquetes
+remotos e independientes que conforman un mismo proyecto o varios proyectos de una compañía.
+
+No obstante, como siempre en Unity, existen ciertas peculiaridades que comentar.
+
 ### Paquetes «amigos»
 En Unity los ensamblajes (paquetes) de test son obligatoriamente distintos a los de producción.  
 En C# y .NET en general, se reconoce igualmente separarlos como una buena práctica.
@@ -443,7 +498,7 @@ haciendo visible su API interna (que no privada; solo la que tenga visibilidad d
 Para ello basta con agregar ciertos atributos decoradores que, por reflexión, se encarga luego Roslyn de coleccionar y modificar el ensamblaje (paquete) correspondiente.
 A fin de tenerlos unificados y fácilmente accesible todos, el convenio es crear un fichero llamado `AssemblyInfo.cs` en el que solo se incluyen los medatados de ensamblaje.
 
-Por ejemplo, un fichero sería tal que:
+Por ejemplo, un fichero `AssemblyInfo.cs` sería tal que:
 ```
 using System.Reflection;
 using System.Runtime.CompilerServices;
@@ -463,9 +518,37 @@ using System.Runtime.CompilerServices;
 
 No hace falta puntualizar que esta práctica requiere una estricta y bien definida política de nombrado de paquetes.
 
+### Test de editor vs. test de escena
+
+Esta es una peculiaridad exclusiva de Unity. En un desarrollo bien arquitecturizado desde el principio, apenas habría que mencionarlo.
+Pero lo habitual es encontrarse con proyectos *legacy* en los que la lógica se ha acoplado a las vicisitudes del motor, por lo que realizar
+test unitarios es poco menos que quimérico.
+
+Aquí entra el valor de los test de escena. 
+En el caso ideal, los test de escena apoyarían solamente test de integración, sistema o aceptación.  
+En el momento en que el motor inunda y fagocita el dominio del proyecto, también hacen falta para test unitarios, paradójicamente. 
+Los test de escena, para quien no esté familiarizado con el motor, ejecutan una escena creada dinámicamente, para poder testear aquello que **vive**
+en el motor, en Unity. Por ejemplo, en los `MonoBehaviour` o `ScriptableObject`. 
+
+Todo lo anterior se menciona solo para hacer entender que la arquitectura se vuelve aún más pesada siendo esto así,
+ya que no solo hace falta un ensamblaje de test por cada capa a probar, sino dos si contiene test de escena (que, en *legacy*, será siempre).
+
+En el diagrama del siguiente apartado se incluye esta opción solo en los lugres mínimos en los que aparecería.
+
 ### Diagrama de arquitectura
 
-TBC.
+Para este proyecto, en Unity con Clean Architecture, usando una mezcla entre sus capas recomendadas y mínimas, la arquitectura sería:
+
+![](./Documentation/TestArchitecture.png)
+
+En la imagen se ve cómo el paquete de Builders (un paquete muy abstracto y con mucho acoplamiento aferente) es un imán de dependencias.  
+A priori esto no tiene por qué ser un problema, ya que es justo el objetivo de estos «paquetes de contratos». Pero una solución posible para  
+proyectos de corto alcance podría ser no diferenciar entre capas de Builders, teniendo un único paquete general con todos y pasando a esta arquitectura:
+
+![](./Documentation/TestArchitecture-CentralizedBuilders.png)
+
+Esta solución está claramente peor repartida, pero como se ha dicho, para proyectos pequeños puede agilizar la gestión de dependencias. 
+En una organización con paquetes reutilizables (en Unity, a través del *package manager*) esto ya se quedaría pequeño y perdería el sentido.
 
 ## Uso de test parametrizados y teorías
 

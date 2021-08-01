@@ -5,8 +5,9 @@
         "UnityEngine.TestRunner",
         "UnityEditor.TestRunner",
         "BoundfoxStudios.FluentAssertions",
+        "Uno.Domain",
         "Uno.Tests.Builders",
-        "Uno.Domain"
+        "Uno.Tests.Builders.Domain"
     ],
     "includePlatforms": [
         "Editor"
