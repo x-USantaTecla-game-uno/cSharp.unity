@@ -30,6 +30,8 @@ o paliar la ausencia de otros de Java.
   * [Creación de dobles: *MockBuilder* y fachada estática de *mocks*](#creación-de-dobles-mockbuilder-y-fachada-estática-de-mocks)
     + [*MockBuilders* que heredan de *Builder*](#mockbuilders-que-heredan-de-builder)
     + [Fachada estática de *mocks*](#fachada-estática-de-mocks)
+- [Encapsulaciones del *act/assert*](#encapsulaciones-del-actassert)
+  * [«Testing superAPI»](#testing-superapi) 
 - [Arquitectura de test y producción](#arquitectura-de-test-y-producción)
   * [Paquetes «amigos»](#paquetes-amigos)
   * [Diagrama de arquitectura](#diagrama-de-arquitectura)
@@ -476,6 +478,103 @@ De hecho, hay muchas otras implementaciones de este tipo de fachadas, de la cual
 Lo resolvían usando el artículo *A*, de manera que quedaba aún más prosaico: `var sut = A.Card().WithColor(Yellow)`.
 Por desgracia, para los sustantivos que empezaban con sonido vocálico no eran capaces de cargar con la culpa de mantener el error gramatical, por lo que,
 de manera desastrosa, duplicaban la clase para llamar a otra *An* y añadirle esos casos, como sería por ejemplo `var sut = An.Eagle().With...`.
+
+## Encapsulaciones del *act/assert*
+
+El concepto de testing API como una API paralela a la de producción que facilita y aísla los test
+es ampliamente conocido. Autores como Robert Martin lo usan mucho (por ejemplo cuando menciona una *«testing superAPI»* en *Clean Architecture*)
+y reflexionan a menudo sobre él, como en esta cita de [su blog](http://blog.cleancoder.com/uncle-bob/2017/10/03/TestContravariance.html):  
+> The structure of the tests must not reflect the structure of the production code because that much coupling makes the system fragile and obstructs refactoring. Rather, the structure of the tests must be independently designed so as to minimize the coupling to the production code.  
+
+Nosotros nos tomaremos la licencia de que **la API de test sí se ate a la de producción**, pero esas corrientes de acoplamiento
+estarán bien canalizadas **a través de la mencionada *testing superAPI***.
+
+### «Testing superAPI»
+
+Pero, ¿en qué consiste ese término? Una *testing superAPI* simplemente cubre los huecos que los test echan de menos en la API de producción.  
+Por ejemplo, **si un test tiene que manipular aquello que el sut ha devuelto, se creará un puente ruidoso entre el act y el assert**.
+La legibilidad de ese test disminuirá considerablemente y, además, otros test seguramente necesitarán hacer la misma manipulación.
+
+No deja de ser lo mismo que se ha dicho antes con todo el proceso de builders, fachadas, etc.  
+Solo que, esta vez, aplicado a la satisfacción de expectativas y no a la preparación del escenario del test.  
+
+Ejemplo:  
+>En clase Luis explicó que para facilitar al máximo la lectura de los assets, se podían crear métodos de envoltura de constantes.   
+>De manera que `Assert.that(1, ...)` podría pasar a ser `Assert.that(times(1), ...)` para no sacrificar la semántica. 
+
+Nosotros seguiremos esta misma filosofía solo que aprovechando las ventajas, una vez más, de los métodos de extensión propios de C#.  
+**Justificación: las librerías de .NET para testing suelen hacer uso de estas prácticas, por lo que es algo bien asentado en la comunidad.**  
+De hecho, las librerías de aserciones generalmente permiten extender su propia panoplia con aquellas aserciones propias al modelo de dominio. Otras más generales las traen ya incluidas. 
+
+Por ejemplo, FluentAssertions usa métodos de extensión muy elegantes para [asertar fechas o tiempos](https://fluentassertions.com/datetimespans/) que se lean casi en lenguaje natural.  
+
+Ejemplos:  
+```
+var date1 = 2.March(2010).At(21, 15);  
+var date2 = 10.Minutes()).Before(example1)  
+
+var time = 1.Days().And(12.Hours())
+```
+
+Nosotros haremos clases estáticas directamente dedicadas a generar esa *testing superAPI* con métodos de extensión.
+Esas clases estáticas, a nivel de arquitectura, estarán en la misma capa que los builders (ver siguiente apartado).
+
+#### Ejemplos en nuestro proyecto
+
+Para clarificar el apartado anterior, incluimos algunos ejemplos reales de nuestro proyecto.  
+
+---
+
+**Objetivo:** operar sobre o con todas las cartas que contiene una baraja.  
+**Problemática:** la baraja oculta la implementación de cómo almacena sus cartas.  
+**Manipulación:** la baraja permite robar cartas y saber cuántas cartas le quedan.  
+**Solución:** un método de extensión va robando cartas de la baraja hasta vaciarla y las devuelve.  
+**Código:**
+```
+public static IEnumerable<Card> AllCards(this Deck deck)
+{
+    while(deck.TotalCards > 0)
+        yield return deck.Draw();
+}
+```
+**Uso:** `createdDeck.AllCards().Should().HaveCount(108);`
+
+---
+
+**Objetivo:** operar sobre las cartas de cierto número que contiene una baraja.  
+**Problemática:** incluso con la extensión anterior, se ensucia mucho la cláusula que hace ese filtro.  
+**Manipulación:** una carta en producción permite saber si hace *match* con cualquier otra.  
+**Solución:** un método de extensión filtra de entre todas las cartas solo las que hacen *match* con un número.  
+**Código:**
+```
+public static IEnumerable<Card> CardsWithNumber(this Deck deck, int number)
+{
+    return deck.AllCards().Where(card => card is NumeredCard &&
+                                         card.Matches(Build.NumeredCard().WithNumber(number)));
+}
+```
+**Uso:** `createdDeck.CardsWithNumber(0).Should().HaveCount(1.PerColor());`
+
+---
+
+**Objetivo:** saber si se cumplen ciertas expectativas un número de veces por cada color.  
+**Problemática:** hay que meter constantes que pierden significado del modelo de dominio.  
+**Manipulación:** en producción hay extensiones para los colores del juego que permiten iterar sobre ellos.  
+**Solución:** un método de extensión convierte un número entero en «un número de veces por cada color».  
+**Código:**
+```
+public static int PerColor(this int howMany)
+{
+    return howMany * ColorExtensions.PlayableColors.Count();
+}
+```
+**Uso:** `createdDeck.CardsWithNumber(0).Should().HaveCount(1.PerColor());`
+
+---
+
+Como se ha visto, sobre todo en estos dos últimos ejemplos enlazados, esta potente API se aúna y entremezcla con el resto de API destinada a test.  
+Es decir, hace uso también de los builders/fachadas a su antojo, cohesionando la propia API, **aumentando su legibilidad y minimizando potenciales errores en ella**,
+como es objetivo de cualquier código de test (ya que no va a testearse recursivamente).
 
 ## Arquitectura de test y producción
 

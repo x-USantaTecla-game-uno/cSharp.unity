@@ -1,5 +1,5 @@
-using System.Linq;
 using FluentAssertions;
+using FluentAssertions.Extensions;
 using NUnit.Framework;
 using Uno.Runtime.Domain;
 using Uno.Tests.Builders.Domain;
@@ -15,7 +15,7 @@ namespace Uno.Tests.Editor.Domain
 
             var createdDeck = sut.Create();
 
-            createdDeck.TotalCards.Should().Be(108);
+            createdDeck.AllCards().Should().HaveCount(108);
         }
         
         [Test]
