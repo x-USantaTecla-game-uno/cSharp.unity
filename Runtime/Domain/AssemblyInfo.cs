@@ -9,6 +9,7 @@ using System.Runtime.CompilerServices;
 [assembly: AssemblyCopyright("(C) 2021 RGV, Raikish")]
 
 [assembly: InternalsVisibleTo("Uno.Tests.Builders")]
+[assembly: InternalsVisibleTo("Uno.Tests.Builders.Domain")]
 [assembly: InternalsVisibleTo("Uno.Domain.Tests")]
 
 [assembly: InternalsVisibleTo("DynamicProxyGenAssembly2")] //Where the mocks are. 

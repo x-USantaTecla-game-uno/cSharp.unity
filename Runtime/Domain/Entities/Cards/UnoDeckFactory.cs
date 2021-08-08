@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Linq;
 using Uno.Runtime.Services;
 
 namespace Uno.Runtime.Domain
@@ -55,7 +54,7 @@ namespace Uno.Runtime.Domain
 
         static IEnumerable<Card> CreateWildCards()
         {
-            for(var _ = 0; _ < ColorExtensions.PlayableColors.Count(); _++)
+            foreach(var playableColor in ColorExtensions.PlayableColors)
             {
                 yield return new WildCard();
                 yield return new DrawFourWildCard();
