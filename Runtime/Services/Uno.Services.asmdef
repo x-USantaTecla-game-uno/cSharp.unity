@@ -1,9 +1,7 @@
 {
-    "name": "Uno.Domain",
+    "name": "Uno.Services",
     "rootNamespace": "",
-    "references": [
-        "Uno.Services"
-    ],
+    "references": [],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,

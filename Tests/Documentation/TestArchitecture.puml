@@ -1,0 +1,58 @@
+@startuml
+skinparam componentStyle uml1
+
+[Builders]
+
+note bottom of [Builders]
+    Dependency
+       magnet!
+end note
+
+package "Entities" #Business{
+    [Domain] #white
+    
+    [Domain.Tests] --> [Domain]
+    [Domain.Tests] --> [Builders]
+    [Domain.Tests] --> [Builders.Domain]
+    [Builders.Domain] --> [Builders]
+    [Builders.Domain] --> [Domain]
+}
+
+package "Use cases" #Implementation {
+    [Application] #white
+    [Application] --> [Domain]  
+    
+    [Application.Tests] --> [Application]
+    [Application.Tests] --> [Builders]
+    [Application.Tests] --> [Builders.Application]
+    [Builders.Application] --> [Builders]
+    [Builders.Application] --> [Application]
+}
+
+package "Adapters" #Technology {
+    [Infrastructure] #white
+    [Infrastructure] --> [Application]
+    [Infrastructure] --> [Domain]
+    
+    [Infrastructure.Tests] --> [Infrastructure]
+    [Infrastructure.Tests.Runtime] --> [Infrastructure]
+    [Infrastructure.Tests] --> [Builders]
+    [Infrastructure.Tests] --> [Builders.Infrastructure]
+    [Builders.Infrastructure] --> [Builders]
+    [Builders.Infrastructure] --> [Infrastructure]
+    
+    
+    note as InfrastructureTests
+    May not exist. It depends
+    whether all infrastructure test
+    are runtime or they are not.
+    end note
+    InfrastructureTests .. [Infrastructure.Tests]
+    InfrastructureTests .. [Builders.Infrastructure]
+}
+
+legend
+|<back:#business> color </back>| Test-related components |
+|<back:#white> color </back>| Non test-related components |
+endlegend
+@enduml

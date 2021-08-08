@@ -1,9 +1,14 @@
 {
-    "name": "Uno.Editor.Tests.Domain",
+    "name": "Uno.Domain.Tests",
     "rootNamespace": "",
     "references": [
         "UnityEngine.TestRunner",
-        "UnityEditor.TestRunner"
+        "UnityEditor.TestRunner",
+        "BoundfoxStudios.FluentAssertions",
+        "Uno.Domain",
+        "Uno.Services",
+        "Uno.Tests.Builders",
+        "Uno.Tests.Builders.Domain"
     ],
     "includePlatforms": [
         "Editor"
@@ -12,7 +17,8 @@
     "allowUnsafeCode": false,
     "overrideReferences": true,
     "precompiledReferences": [
-        "nunit.framework.dll"
+        "nunit.framework.dll",
+        "NSubstitute.dll"
     ],
     "autoReferenced": false,
     "defineConstraints": [
