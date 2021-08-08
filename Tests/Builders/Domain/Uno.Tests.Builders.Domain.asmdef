@@ -1,0 +1,17 @@
+{
+    "name": "Uno.Tests.Builders.Domain",
+    "rootNamespace": "",
+    "references": [
+        "GUID:05c5cf7fc0f758b488ff58fecde8a169",
+        "GUID:8407a5f6ab90fb94a9fae27d59015d61"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

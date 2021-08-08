@@ -1,0 +1,16 @@
+{
+    "name": "Uno.Tests.Builders",
+    "rootNamespace": "",
+    "references": [
+        "GUID:05c5cf7fc0f758b488ff58fecde8a169"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": true
+}
