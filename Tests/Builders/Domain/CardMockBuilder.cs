@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Uno.Runtime.Domain;
+using Uno.Runtime.Domain.Entities.Cards;
 
 namespace Uno.Tests.Builders.Domain
 {

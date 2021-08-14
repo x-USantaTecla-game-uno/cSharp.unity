@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Uno.Runtime.Domain
+namespace Uno.Runtime.Domain.Entities
 {
     public class Turn
     {

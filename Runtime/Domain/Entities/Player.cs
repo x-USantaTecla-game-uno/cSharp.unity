@@ -1,20 +1,22 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using Uno.Runtime.Domain.Entities.Cards;
 
-namespace Uno.Runtime.Domain
+namespace Uno.Runtime.Domain.Entities
 {
     public class Player
     {
-        readonly ICollection<Card> hand;
+        readonly List<Card> hand;
 
         public int RemainingCards => hand.Count;
 
         #region Constructors
         public Player() : this(new List<Card>()) { }
         
-        public Player(ICollection<Card> startingHand)
+        public Player(IEnumerable<Card> startingHand)
         {
-            hand = startingHand;
+            hand = startingHand.ToList();
         }
         #endregion
 
@@ -23,7 +25,6 @@ namespace Uno.Runtime.Domain
             hand.Add(card);
         }
 
-        //TODO: fails because Card misses equality override.
         public void RemoveCard(Card card)
         {
             if(!hand.Contains(card))

@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Uno.Runtime.Domain;
+using Uno.Runtime.Domain.Entities;
+using Uno.Runtime.Domain.Entities.Cards;
 
 namespace Uno.Tests.Builders.Domain
 {

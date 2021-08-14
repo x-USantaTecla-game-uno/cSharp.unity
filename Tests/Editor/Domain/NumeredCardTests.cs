@@ -1,6 +1,9 @@
+using System;
 using FluentAssertions;
 using NUnit.Framework;
 using Uno.Runtime.Domain;
+using Uno.Runtime.Domain.Entities;
+using Uno.Runtime.Domain.Entities.Cards;
 using Uno.Tests.Builders.Domain;
 
 namespace Uno.Tests.Editor.Domain
@@ -36,6 +39,28 @@ namespace Uno.Tests.Editor.Domain
             NumeredCard sut2 = Build.NumeredCard().WithNumber(1).WithColor(Color.Red);
 
             var result = sut1.Matches(sut2);
+
+            result.Should().BeFalse();
+        }
+
+        [Test]
+        public void NumeredCard_Equality_IfSameNumber()
+        {
+            NumeredCard sut1 = Build.NumeredCard().WithNumber(1);
+            NumeredCard sut2 = Build.NumeredCard().WithNumber(1);
+
+            var result = sut1.Equals(sut2);
+
+            result.Should().BeTrue();
+        }
+        
+        [Test]
+        public void NumeredCard_Inequality_IfNotSameNumber()
+        {
+            NumeredCard sut1 = Build.NumeredCard().WithNumber(1);
+            NumeredCard sut2 = Build.NumeredCard().WithNumber(2);
+
+            var result = sut1.Equals(sut2);
 
             result.Should().BeFalse();
         }

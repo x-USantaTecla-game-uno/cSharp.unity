@@ -3,6 +3,8 @@ using System.Linq;
 using FluentAssertions;
 using NUnit.Framework;
 using Uno.Runtime.Domain;
+using Uno.Runtime.Domain.Entities;
+using Uno.Runtime.Domain.Entities.Cards;
 using Uno.Tests.Builders.Domain;
 
 namespace Uno.Tests.Editor.Domain
@@ -69,7 +71,7 @@ namespace Uno.Tests.Editor.Domain
             act.Should().Throw<InvalidOperationException>();
         }
 
-        [Test, Retry(10)]
+        [Test, Retry(1000)]
         public void Draw_FromPlentyCards_DoesNotReturnAlwaysTheFirstInsertedCard()
         {
             var docCards = Build.NumeredCard().BunchOf(50);

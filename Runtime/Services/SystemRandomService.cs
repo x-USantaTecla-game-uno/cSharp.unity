@@ -1,7 +1,6 @@
 using System;
-using Kalendra.Commons.Runtime.Architecture.Services;
 
-namespace Kalendra.Commons.Runtime.Infraestructure.Services
+namespace Uno.Runtime.Services
 {
     public sealed class SystemRandomService : AbstractRandomService
     {

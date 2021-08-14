@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Uno.Runtime.Domain
+namespace Uno.Runtime.Domain.Entities
 {
     public enum Color
     {

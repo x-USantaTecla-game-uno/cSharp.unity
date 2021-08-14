@@ -1,4 +1,4 @@
-namespace Uno.Runtime.Domain
+namespace Uno.Runtime.Domain.Entities.Cards
 {
     public class WildCard : Card
     {

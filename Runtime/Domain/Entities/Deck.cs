@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Kalendra.Commons.Runtime.Architecture.Services;
-using Kalendra.Commons.Runtime.Infraestructure.Services;
+using Uno.Runtime.Domain.Entities.Cards;
+using Uno.Runtime.Services;
 
-namespace Uno.Runtime.Domain
+namespace Uno.Runtime.Domain.Entities
 {
     public class Deck
     {

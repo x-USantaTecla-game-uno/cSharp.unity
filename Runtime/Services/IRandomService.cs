@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace Kalendra.Commons.Runtime.Architecture.Services
+namespace Uno.Runtime.Services
 {
     public interface IRandomService
     {

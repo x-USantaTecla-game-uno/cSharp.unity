@@ -1,4 +1,8 @@
+using System.Collections.Generic;
+using System.Linq;
 using Uno.Runtime.Domain;
+using Uno.Runtime.Domain.Entities;
+using Uno.Runtime.Domain.Entities.Cards;
 
 namespace Uno.Tests.Builders.Domain
 {
@@ -7,6 +11,8 @@ namespace Uno.Tests.Builders.Domain
         Card[] cards;
         
         #region Fluent API
+        public PlayerBuilder WithHand(IEnumerable<Card> cards) => WithHand(cards.ToArray());
+
         public PlayerBuilder WithHand(params Card[] cards)
         {
             this.cards = cards;

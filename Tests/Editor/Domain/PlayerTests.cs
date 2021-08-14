@@ -1,7 +1,9 @@
 using System;
+using System.Linq;
 using FluentAssertions;
 using NUnit.Framework;
 using Uno.Runtime.Domain;
+using Uno.Runtime.Domain.Entities;
 using Uno.Tests.Builders.Domain;
 
 namespace Uno.Tests.Editor.Domain
@@ -39,14 +41,14 @@ namespace Uno.Tests.Editor.Domain
             playerRemainingCards.Should().BePositive();
         }
 
-        [Test, Category("TODO"), Ignore("TODO")]
+        [Test]
         public void PlayerWithCards_AfterRemoveCard_HasLessCards()
         {
-            var docCard = Fake.Card();
-            Player sut = Build.Player().WithHand(docCard);
+            var docCardsBunch = Build.NumeredCard().BunchOf(20);
+            Player sut = Build.Player().WithHand(docCardsBunch);
 
             var cardsBefore = sut.RemainingCards;
-            sut.RemoveCard(docCard);
+            sut.RemoveCard(docCardsBunch.First());
             var cardsAfter = sut.RemainingCards;
 
             cardsAfter.Should().BeLessThan(cardsBefore);

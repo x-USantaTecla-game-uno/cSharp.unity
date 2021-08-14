@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using Uno.Runtime.Services;
 
-namespace Uno.Runtime.Domain
+namespace Uno.Runtime.Domain.Entities.Cards
 {
     public class UnoDeckFactory : IFactory<Deck>
     {

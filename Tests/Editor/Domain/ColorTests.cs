@@ -1,6 +1,7 @@
 using FluentAssertions;
 using NUnit.Framework;
 using Uno.Runtime.Domain;
+using Uno.Runtime.Domain.Entities;
 
 namespace Uno.Tests.Editor.Domain
 {

@@ -1,4 +1,5 @@
 using Uno.Runtime.Domain;
+using Uno.Runtime.Domain.Entities;
 
 namespace Uno.Tests.Builders.Domain
 {

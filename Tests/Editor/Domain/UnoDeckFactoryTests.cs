@@ -2,6 +2,7 @@ using FluentAssertions;
 using FluentAssertions.Extensions;
 using NUnit.Framework;
 using Uno.Runtime.Domain;
+using Uno.Runtime.Domain.Entities.Cards;
 using Uno.Tests.Builders.Domain;
 
 namespace Uno.Tests.Editor.Domain
