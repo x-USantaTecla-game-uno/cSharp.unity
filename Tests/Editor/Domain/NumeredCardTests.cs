@@ -42,27 +42,5 @@ namespace Uno.Tests.Editor.Domain
 
             result.Should().BeFalse();
         }
-
-        [Test]
-        public void NumeredCard_Equality_IfSameNumber()
-        {
-            NumeredCard sut1 = Build.NumeredCard().WithNumber(1);
-            NumeredCard sut2 = Build.NumeredCard().WithNumber(1);
-
-            var result = sut1.Equals(sut2);
-
-            result.Should().BeTrue();
-        }
-        
-        [Test]
-        public void NumeredCard_Inequality_IfNotSameNumber()
-        {
-            NumeredCard sut1 = Build.NumeredCard().WithNumber(1);
-            NumeredCard sut2 = Build.NumeredCard().WithNumber(2);
-
-            var result = sut1.Equals(sut2);
-
-            result.Should().BeFalse();
-        }
     }
 }
