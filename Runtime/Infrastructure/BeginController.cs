@@ -5,56 +5,57 @@ namespace Uno.Runtime.Infrastructure
 {
     public class BeginController
     {
-        private BeginInputPort beginInputPort;
-        private Console console;
+        readonly BeginInputPort beginInputPort;
+        readonly Console console;
 
-        private int numberOfPlayers;
-        private int numberOfHumans;
+        int numberOfPlayers;
+        int numberOfHumans;
 
         #region Constructors
 
-        public BeginController(BeginInputPort beginInputPort)
+        public BeginController(BeginInputPort beginInputPort, Console console)
         {
             this.beginInputPort = beginInputPort;
+            this.console = console;
         }
 
         #endregion
 
         public IEnumerator Begin()
         {
-            yield return GetNumberOfPlayers();
-            yield return GetNumberOfHumans();
+            yield return AskForNumberOfPlayers();
+            yield return AskForNumberOfHumans();
 
-            UnoRequest request = new UnoRequest(numberOfPlayers, numberOfHumans);
+            var request = new CreateUnoRequest(numberOfPlayers, numberOfHumans);
 
             beginInputPort.CreateUno(request);
         }
 
-        private IEnumerator GetNumberOfPlayers()
+        IEnumerator AskForNumberOfPlayers()
         {
-            bool isValidInput;
+            var isValidInput = false;
 
-            do
+            while(!isValidInput)
             {
-                beginInputPort.NoticeWantNumberOfPlayers();
                 yield return console.Read();
-                numberOfPlayers =  int.Parse(console.CharacterRead);
+                //TODO: Console tiene que tener un NumberRead que te haga la conversión por dentro.
+                numberOfPlayers = int.Parse(console.CharacterRead); 
 
                 isValidInput = beginInputPort.IsValidNumberOfPlayers(numberOfPlayers);
-            } while (!isValidInput);
+            }
         }
-        
-        private IEnumerator GetNumberOfHumans()
-        {
-            bool isValidInput;
 
-            do
+        IEnumerator AskForNumberOfHumans()
+        {
+            var isValidInput = false;
+
+            while (!isValidInput)
             {
-                beginInputPort.NoticeWantNumberOfHumans();
                 yield return console.Read();
+                //TODO: Console tiene que tener un NumberRead que te haga la conversión por dentro.
                 numberOfHumans =  int.Parse(console.CharacterRead);
                 isValidInput = beginInputPort.IsValidNumberOfHumans(numberOfHumans);
-            } while (!isValidInput);
+            }
         }
     }
 }

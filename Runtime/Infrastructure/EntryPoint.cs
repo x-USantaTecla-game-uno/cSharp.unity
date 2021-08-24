@@ -5,11 +5,11 @@ namespace Uno.Runtime.Infrastructure
 {
     public class EntryPoint: MonoBehaviour
     {
-        private void Awake()
+        void Awake()
         {
             var beginInputPort = new BeginInteractor();
-            var beginController = new BeginController(beginInputPort);
-            this.StartCoroutine(beginController.Begin());
+            var beginController = new BeginController(beginInputPort, gameObject.AddComponent<Console>());
+            StartCoroutine(beginController.Begin());
         }
     }
 }
