@@ -5,19 +5,12 @@ namespace Uno.Runtime.Infrastructure
 {
     public class Console: MonoBehaviour
     {
-        string characterRead;
-
-        #region Properties
-        public string CharacterRead
-        {
-            get => this.characterRead;
-        }
-        #endregion
+        public string CharacterRead { get; private set; }
         
         #region Constructors
         public Console()
         {
-            this.characterRead = "";
+            CharacterRead = "";
         }
         #endregion
         
@@ -29,7 +22,7 @@ namespace Uno.Runtime.Infrastructure
         public IEnumerator Read()
         {
             yield return new WaitUntil(() => Input.anyKeyDown);
-            this.characterRead = Input.inputString;
+            CharacterRead = Input.inputString;
         }
     }
 }
