@@ -7,8 +7,11 @@ namespace Uno.Runtime.Infrastructure
     {
         void Awake()
         {
-            var beginInputPort = new BeginInteractor();
-            var beginController = new BeginController(beginInputPort, gameObject.AddComponent<Console>());
+            var console = gameObject.AddComponent<Console>();
+            var beginView = new BeginViewImplementation(console);
+            var beginOutputPort = new BeginPresenter(beginView);
+            var beginInputPort = new BeginInteractor(beginOutputPort);
+            var beginController = new BeginController(beginInputPort, console);
             beginController.Begin();
         }
     }
