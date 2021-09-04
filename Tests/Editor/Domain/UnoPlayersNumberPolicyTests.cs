@@ -45,5 +45,28 @@ namespace Uno.Tests.Editor.Domain
 
             result.Should().BeFalse();
         }
+        
+        [Theory]
+        public void NumberOfPlayersAndBiggerNumberHumans_Validates_IsNotValidInput()
+        {
+            var sut = new UnoPlayersNumberPolicy();
+            var numberOfPlayers = 3;
+
+            var result = sut.IsValidNumberOfHumans(numberOfPlayers, numberOfPlayers + 1);
+
+            result.Should().BeFalse();
+        }
+        
+        
+        [Theory]
+        public void NumberOfPlayersAndSameNumberOfHumans_Validates_IsValidInput()
+        {
+            var sut = new UnoPlayersNumberPolicy();
+            var numberOfPlayers = 3;
+            
+            var result = sut.IsValidNumberOfHumans(numberOfPlayers, numberOfPlayers);
+
+            result.Should().BeTrue();
+        }
     }
 }
