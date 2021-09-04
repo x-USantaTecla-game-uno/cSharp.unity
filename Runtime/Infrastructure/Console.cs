@@ -1,16 +1,13 @@
-﻿using System.Collections;
+﻿using System.Threading.Tasks;
 using UnityEngine;
 
 namespace Uno.Runtime.Infrastructure
 {
     public class Console: MonoBehaviour
     {
-        public string CharacterRead { get; private set; }
-        
         #region Constructors
         public Console()
         {
-            CharacterRead = "";
         }
         #endregion
         
@@ -19,10 +16,24 @@ namespace Uno.Runtime.Infrastructure
             Debug.Log(message);    
         }
 
-        public IEnumerator Read()
+        public async Task<int> ReadInteger()
         {
-            yield return new WaitUntil(() => Input.anyKeyDown);
-            CharacterRead = Input.inputString;
+            await WaitUntilInput();
+            return int.Parse(Input.inputString);
+        }
+        
+        public async Task<string> Read()
+        {
+            await WaitUntilInput();
+            return Input.inputString;
+        }
+
+        private async Task WaitUntilInput()
+        {
+            while (!Input.anyKeyDown) 
+            {
+                await Task.Delay(1);
+            }
         }
     }
 }
