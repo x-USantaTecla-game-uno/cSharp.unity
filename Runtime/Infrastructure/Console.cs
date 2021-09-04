@@ -19,15 +19,18 @@ namespace Uno.Runtime.Infrastructure
         public async Task<int> ReadInteger()
         {
             await WaitUntilInput();
-            return int.Parse(Input.inputString);
+            var result = await GetResult();
+            return int.Parse(result);
         }
         
         public async Task<string> Read()
         {
             await WaitUntilInput();
-            return Input.inputString;
+            var result = await GetResult();
+            return result;
         }
 
+        #region SupportMethods
         private async Task WaitUntilInput()
         {
             while (!Input.anyKeyDown) 
@@ -35,5 +38,13 @@ namespace Uno.Runtime.Infrastructure
                 await Task.Delay(1);
             }
         }
+        
+        private async Task<string> GetResult()
+        {
+            var result = Input.inputString;
+            await Task.Delay(1);
+            return result;
+        }
+        #endregion
     }
 }
