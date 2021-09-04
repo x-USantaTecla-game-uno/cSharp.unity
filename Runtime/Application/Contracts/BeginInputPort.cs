@@ -8,5 +8,7 @@
         //TODO: aunque desde nuestro punto de vista como programadores/diseñadores quede más raro, refuerza el ubiquituous language.
         bool IsValidNumberOfPlayers(int numberOfPlayers);
         bool IsValidNumberOfHumans(int numberOfPlayers, int numberOfHumans);
+        void NoticeWantNumberOfPlayers();
+        void NoticeWantNumberOfHumans();
     }
 }

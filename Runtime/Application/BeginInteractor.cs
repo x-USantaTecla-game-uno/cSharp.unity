@@ -5,13 +5,15 @@ namespace Uno.Runtime.Application
     public class BeginInteractor: BeginInputPort
     {
         private readonly UnoPlayersNumberPolicy unoPlayerNumberPolicy;
+        private readonly BeginOutputPort outputPort;
 
         public Domain.Uno Uno { get; private set; }
         
         #region Constructors
-        public BeginInteractor()
+        public BeginInteractor(BeginOutputPort outputPort)
         {
             unoPlayerNumberPolicy = new UnoPlayersNumberPolicy();
+            this.outputPort = outputPort;
         }
         #endregion
 
@@ -28,6 +30,16 @@ namespace Uno.Runtime.Application
         public bool IsValidNumberOfHumans(int numberOfPlayers, int numberOfHumans)
         {
             return unoPlayerNumberPolicy.IsValidNumberOfHumans(numberOfPlayers, numberOfHumans);
+        }
+
+        public void NoticeWantNumberOfPlayers()
+        {
+            outputPort.NoticeWantNumberOfPlayers();
+        }
+
+        public void NoticeWantNumberOfHumans()
+        {
+            outputPort.NoticeWantNumberOfHumans();
         }
     }
 }
