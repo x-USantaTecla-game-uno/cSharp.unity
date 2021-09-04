@@ -1,4 +1,4 @@
-﻿using System.Collections;
+﻿using System.Threading.Tasks;
 using Uno.Runtime.Application;
 
 namespace Uno.Runtime.Infrastructure
@@ -12,49 +12,42 @@ namespace Uno.Runtime.Infrastructure
         int numberOfHumans;
 
         #region Constructors
-
         public BeginController(BeginInputPort beginInputPort, Console console)
         {
             this.beginInputPort = beginInputPort;
             this.console = console;
         }
-
         #endregion
 
-        public IEnumerator Begin()
+        public async Task Begin()
         {
-            yield return AskForNumberOfPlayers();
-            yield return AskForNumberOfHumans();
+            await AskForNumberOfPlayers();
+            await AskForNumberOfHumans();
 
             var request = new CreateUnoRequest(numberOfPlayers, numberOfHumans);
 
             beginInputPort.CreateUno(request);
         }
 
-        IEnumerator AskForNumberOfPlayers()
+        async Task AskForNumberOfPlayers()
         {
             var isValidInput = false;
 
             while(!isValidInput)
             {
-                yield return console.Read();
-                //TODO: Console tiene que tener un NumberRead que te haga la conversión por dentro.
-                numberOfPlayers = int.Parse(console.CharacterRead); 
-
+                numberOfPlayers = await console.ReadInteger();
                 isValidInput = beginInputPort.IsValidNumberOfPlayers(numberOfPlayers);
             }
         }
 
-        IEnumerator AskForNumberOfHumans()
+        async Task AskForNumberOfHumans()
         {
             var isValidInput = false;
 
             while (!isValidInput)
             {
-                yield return console.Read();
-                //TODO: Console tiene que tener un NumberRead que te haga la conversión por dentro.
-                numberOfHumans =  int.Parse(console.CharacterRead);
-                isValidInput = beginInputPort.IsValidNumberOfHumans(numberOfHumans);
+                numberOfHumans = await this.console.ReadInteger();
+                isValidInput = beginInputPort.IsValidNumberOfHumans(numberOfPlayers, numberOfHumans);
             }
         }
     }
