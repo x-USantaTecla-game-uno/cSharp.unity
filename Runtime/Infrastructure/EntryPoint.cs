@@ -9,7 +9,7 @@ namespace Uno.Runtime.Infrastructure
         {
             var beginInputPort = new BeginInteractor();
             var beginController = new BeginController(beginInputPort, gameObject.AddComponent<Console>());
-            StartCoroutine(beginController.Begin());
+            beginController.Begin();
         }
     }
 }
