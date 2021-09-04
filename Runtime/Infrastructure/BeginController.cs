@@ -35,6 +35,7 @@ namespace Uno.Runtime.Infrastructure
 
             while(!isValidInput)
             {
+                beginInputPort.NoticeWantNumberOfPlayers();
                 numberOfPlayers = await console.ReadInteger();
                 isValidInput = beginInputPort.IsValidNumberOfPlayers(numberOfPlayers);
             }
@@ -46,6 +47,7 @@ namespace Uno.Runtime.Infrastructure
 
             while (!isValidInput)
             {
+                beginInputPort.NoticeWantNumberOfHumans();
                 numberOfHumans = await this.console.ReadInteger();
                 isValidInput = beginInputPort.IsValidNumberOfHumans(numberOfPlayers, numberOfHumans);
             }
