@@ -1,40 +1,33 @@
-﻿namespace Uno.Runtime.Application
+﻿using Uno.Runtime.Domain;
+
+namespace Uno.Runtime.Application
 {
     public class BeginInteractor: BeginInputPort
     {
+        private readonly UnoPlayersNumberPolicy unoPlayerNumberPolicy;
+
+        public Domain.Uno Uno { get; private set; }
+        
+        #region Constructors
         public BeginInteractor()
         {
-            
+            unoPlayerNumberPolicy = new UnoPlayersNumberPolicy();
         }
-        
-        public void NoticeWantNumberOfPlayers()
-        {
-            
-        }
-
-        public void NoticeWantNumberOfHumans()
-        {
-            
-        }
+        #endregion
 
         public void CreateUno(CreateUnoRequest request)
         {
-            //TODO: tiene que almacenarse la referencia en algún lado.
-            new Domain.Uno(request.NumberOfPlayers, request.NumberOfHuman);
+            Uno = new Domain.Uno(request.NumberOfPlayers, request.NumberOfHuman);
         }
 
         public bool IsValidNumberOfPlayers(int numberOfPlayers)
         {
-            //TODO: tiene que preguntarle a una UnoPlayersNumberPolicy, que devuelva que sí si está entre 2 y 10.
-            //TODO: esta Policy podría estar "embebida" en la API pública de la clase Uno, incluso estáticamente. 
-            return false;
+            return unoPlayerNumberPolicy.IsValidNumberOfPlayers(numberOfPlayers);
         }
 
-        public bool IsValidNumberOfHumans(int numberOfHumans)
+        public bool IsValidNumberOfHumans(int numberOfPlayers, int numberOfHumans)
         {
-            //TODO: tiene que preguntarle a alguien del dominio, de nuevo puede ser a Uno estáticamente.
-            //TODO: a fin de cuentas es que sea un número <= al total de jugadores, pero no es responsabilidad suya la operación.
-            return false;
+            return unoPlayerNumberPolicy.IsValidNumberOfHumans(numberOfPlayers, numberOfHumans);
         }
     }
 }
